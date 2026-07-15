@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import json
+# import json
 from datetime import date, datetime, timezone
 from typing import Any
 from uuid import uuid4
@@ -60,8 +60,13 @@ def extract_collection(
         rows.append(
             {
                 "document_id": document.id,
-                "document_path": document.reference.path,
-                "data": json.dumps(document_data),
+                # "document_path": document.reference.path,
+                "source_system": "firestore wt roster app",
+                "source_application": "wt roster app",
+                "source_project": FIRESTORE_PROJECT_ID,
+                "source_database": "(default)",
+                "source_collection": collection_name,
+                "data": document_data,
                 "source_created_at": (
                     document.create_time.isoformat()
                     if document.create_time
@@ -93,7 +98,12 @@ def load_to_bigquery(
 
     schema = [
         bigquery.SchemaField("document_id", "STRING", mode="REQUIRED"),
-        bigquery.SchemaField("document_path", "STRING", mode="REQUIRED"),
+        # bigquery.SchemaField("document_path", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("source_system", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("source_application", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("source_project", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("source_database", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("source_collection", "STRING", mode="REQUIRED"),
         bigquery.SchemaField("data", "JSON"),
         bigquery.SchemaField("source_created_at", "TIMESTAMP"),
         bigquery.SchemaField("source_updated_at", "TIMESTAMP"),
