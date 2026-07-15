@@ -56,13 +56,11 @@ def extract_collection(
 
     for document in documents:
         document_data = make_json_safe(document.to_dict())
-
         rows.append(
             {
                 "document_id": document.id,
-                # "document_path": document.reference.path,
-                "source_system": "firestore wt roster app",
-                "source_application": "wt roster app",
+                "source_system": "firestore",
+                "source_application": "wt_roster_app",
                 "source_project": FIRESTORE_PROJECT_ID,
                 "source_database": "(default)",
                 "source_collection": collection_name,
